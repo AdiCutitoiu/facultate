@@ -18,7 +18,7 @@ async function main() {
 
   const result = await benchmarkRunner({ worker, input, output });
 
-  console.log(result);
+  console.log(JSON.stringify(result));
 }
 
 main();
