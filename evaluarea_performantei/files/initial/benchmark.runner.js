@@ -1,11 +1,5 @@
-const fs = require('fs');
-
-function toKB(sizeInBytes) {
-  return parseFloat((sizeInBytes / 1024).toFixed(2));
-}
-
 module.exports = async ({ worker = () => {}, input, output }) => {
-  const inputFileSize = toKB(fs.statSync(input).size);
+  const inputFileSize = 0;
   const startTime = Date.now();
 
   const startMemory = process.memoryUsage().heapUsed;
@@ -18,12 +12,12 @@ module.exports = async ({ worker = () => {}, input, output }) => {
   const endTime = Date.now();
   const diffTime = endTime - startTime;
 
-  const outputFileSize = toKB(fs.statSync(output).size);
+  const outputFileSize = 0;
 
   return {
     inputFileSize,
     outputFileSize,
     timeMs: diffTime,
-    memoryKB: parseFloat((diffMemory / 1024).toFixed(2)),
+    memoryKB: diffMemory,
   };
 };

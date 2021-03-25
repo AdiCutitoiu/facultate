@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^7.1.0",
+    "cross-spawn": "^7.0.3",
+    "csv-writer": "^1.6.0",
     "lz-string": "^1.4.4",
-    "lzma": "^2.3.2"
+    "lzma": "^2.3.2",
+    "rimraf": "^3.0.2"
   }
 }

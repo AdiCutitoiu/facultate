@@ -19,6 +19,13 @@
         "gzip",
         "-d"
       ]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch All",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\index.js"
     }
   ]
 }
