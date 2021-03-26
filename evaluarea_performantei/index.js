@@ -2,6 +2,7 @@ const fs = require("fs");
 const crossSpawn = require("cross-spawn");
 const path = require("path");
 const rimraf = require("rimraf");
+const CSV = require('csv-string');
 
 const INITIAL_FOLDER = path.join(__dirname, "files", "initial");
 const COMPRESSED_FOLDER = path.join(__dirname, "files", "compressed");
@@ -36,7 +37,12 @@ function execute({ inputPath, outputPath, algorithm, decompress = false }) {
   }
 
   const result = crossSpawn.sync("node", arguments);
-  return result.stdout;
+  if(result.error) {
+    console.log(error);
+  }
+
+  const stdout = '' + result.stdout;
+  return JSON.parse(stdout);
 }
 
 function buildOutputPath({ outputPath, fileName, algorithm }) {
@@ -45,11 +51,11 @@ function buildOutputPath({ outputPath, fileName, algorithm }) {
   return path.join(outputPath, `${name}.${algorithm}${extension}`);
 }
 
-const ALGORITHMS = ["lzma", "lzstring", "gzip"];
+const ALGORITHMS = ["lzma", /*"lzstring", "gzip"*/];
+
+const results = [];
 
 files.forEach((filePath) => {
-  const results = [];
-
   ALGORITHMS.forEach((algorithm) => {
     const fileName = path.basename(filePath);
     const compressedFilePath = buildOutputPath({
@@ -76,10 +82,19 @@ files.forEach((filePath) => {
     });
 
     results.push({
-        compression: JSON.parse('' + result1),
-        decompression: JSON.parse('' + result2)
-    })
+      sizeKb: result1.inputFileSize,
+      compressionSizeKb: result1.outputFileSize,
+      compressionTimeMs: result1.timeMs,
+      compressionMemoryKb: result1.memoryKB,
+      decompressionTimeMs: result2.timeMs,
+      decompressionMemoryKb: result2.memoryKB,
+    });
   });
-
-  console.log(results);
 });
+
+const csvRows = [
+  CSV.stringify(Object.keys(results[0])),
+  ...results.map(x => CSV.stringify(x))
+]
+
+fs.writeFileSync('./report.csv', csvRows.join(''));

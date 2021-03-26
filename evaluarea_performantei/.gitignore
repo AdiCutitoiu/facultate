@@ -63,6 +63,7 @@ typings/
 # ignore dist folder
 dist
 build
+files
 
 # uploaded server resources
 server/res/
@@ -72,3 +73,5 @@ production.json
 
 # development config file
 development.json
+
+report.csv
