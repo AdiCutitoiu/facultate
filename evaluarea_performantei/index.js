@@ -51,7 +51,7 @@ function buildOutputPath({ outputPath, fileName, algorithm }) {
   return path.join(outputPath, `${name}.${algorithm}${extension}`);
 }
 
-const ALGORITHMS = ["lzma", /*"lzstring", "gzip"*/];
+const ALGORITHMS = ["lzma", "lzstring", "gzip"];
 
 const results = [];
 
