@@ -12,11 +12,11 @@
       "program": "${workspaceFolder}\\runner.js",
       "args": [
         "-i",
-        "E:\\facultate\\master\\evaluarea_performantei\\files\\benchmark.runner.js.zip",
+        "E:\\master\\evaluarea_performantei\\files\\compressed\\Clean architecture.pdf.xz",
         "-o",
-        "E:\\facultate\\master\\evaluarea_performantei\\files\\benchmark.runner.js.zip2",
+        "E:\\master\\evaluarea_performantei\\files\\decompressed\\Clean architecture.pdf",
         "-a",
-        "gzip",
+        "lzma",
         "-d"
       ]
     },

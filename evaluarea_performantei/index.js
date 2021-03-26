@@ -2,7 +2,7 @@ const fs = require("fs");
 const crossSpawn = require("cross-spawn");
 const path = require("path");
 const rimraf = require("rimraf");
-const CSV = require('csv-string');
+const CSV = require("csv-string");
 
 const INITIAL_FOLDER = path.join(__dirname, "files", "initial");
 const COMPRESSED_FOLDER = path.join(__dirname, "files", "compressed");
@@ -37,11 +37,11 @@ function execute({ inputPath, outputPath, algorithm, decompress = false }) {
   }
 
   const result = crossSpawn.sync("node", arguments);
-  if(result.error) {
+  if (result.error) {
     console.log(error);
   }
 
-  const stdout = '' + result.stdout;
+  const stdout = "" + result.stdout;
   return JSON.parse(stdout);
 }
 
@@ -51,11 +51,13 @@ function buildOutputPath({ outputPath, fileName, algorithm }) {
   return path.join(outputPath, `${name}.${algorithm}${extension}`);
 }
 
-const ALGORITHMS = ["lzma", "lzstring", "gzip"];
+const ALGORITHMS = ["gzip", "lzma" /*"lzstring"*/];
 
 const results = [];
 
 files.forEach((filePath) => {
+  let current = {};
+
   ALGORITHMS.forEach((algorithm) => {
     const fileName = path.basename(filePath);
     const compressedFilePath = buildOutputPath({
@@ -81,20 +83,23 @@ files.forEach((filePath) => {
       decompress: true,
     });
 
-    results.push({
+    current = {
+      ...current,
       sizeKb: result1.inputFileSize,
-      compressionSizeKb: result1.outputFileSize,
-      compressionTimeMs: result1.timeMs,
-      compressionMemoryKb: result1.memoryKB,
-      decompressionTimeMs: result2.timeMs,
-      decompressionMemoryKb: result2.memoryKB,
-    });
+      [algorithm + "-compressionSizeKb"]: result1.outputFileSize,
+      [algorithm + "-compressionTimeMs"]: result1.timeMs,
+      [algorithm + "-compressionMemoryKb"]: result1.memoryKB,
+      [algorithm + "-decompressionSizeKb"]: result2.outputFileSize,
+      [algorithm + "-decompressionTimeMs"]: result2.timeMs,
+      [algorithm + "-decompressionMemoryKb"]: result2.memoryKB,
+    };
   });
+  results.push(current);
 });
 
 const csvRows = [
   CSV.stringify(Object.keys(results[0])),
-  ...results.map(x => CSV.stringify(x))
-]
+  ...results.map((x) => CSV.stringify(x)),
+];
 
-fs.writeFileSync('./report.csv', csvRows.join(''));
+fs.writeFileSync("./report.csv", csvRows.join(""));
