@@ -8,11 +8,11 @@ module.exports = async ({ worker = () => {}, input, output }) => {
   const inputFileSize = toKB(fs.statSync(input).size);
   const startTime = Date.now();
 
-  const startMemory = process.memoryUsage().heapUsed;
+  const startMemory = process.memoryUsage().rss;
 
   await worker({ input, output });
 
-  const endMemory = process.memoryUsage().heapUsed;
+  const endMemory = process.memoryUsage().rss;
   const diffMemory = endMemory - startMemory;
 
   const endTime = Date.now();

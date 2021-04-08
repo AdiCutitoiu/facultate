@@ -5,7 +5,7 @@ module.exports = function parse() {
   program.version("0.0.1");
 
   program
-    .requiredOption("-i, --input <path1>", "input file")
+    .requiredOption("-i, --input <path>", "input file")
     .requiredOption("-o, --output <path>", "output file")
     .option("-d, --decompress", "decompresses the input file", false);
 
