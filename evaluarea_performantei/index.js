@@ -3,6 +3,7 @@ const path = require("path");
 const rimraf = require("rimraf");
 const CSV = require("csv-string");
 const axios = require("axios").default;
+const writeHtmlReport = require('./src/html.report.writer');
 
 const INITIAL_FOLDER = path.join(__dirname, "files", "initial");
 const COMPRESSED_FOLDER = path.join(__dirname, "files", "compressed");
@@ -48,6 +49,8 @@ async function main() {
   ];
 
   fs.writeFileSync("./report.csv", csvRows.join(""));
+
+  writeHtmlReport(results);
 }
 
 main();

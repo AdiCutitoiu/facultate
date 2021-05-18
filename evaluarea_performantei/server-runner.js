@@ -61,10 +61,13 @@ const runForFile = ({ algorithm, filePath }) => {
     decompress: true,
   });
 
+  const compressionRatio = (result1.outputFileSize / result1.inputFileSize).toFixed(2);
+
   return {
     sizeKb: result1.inputFileSize,
     [algorithm + "-compressionSizeKb"]: result1.outputFileSize,
     [algorithm + "-compressionTimeMs"]: result1.timeMs,
+    [algorithm + "-compressionRatio"]: parseFloat(compressionRatio),
     [algorithm + "-compressionMemoryKb"]: result1.memoryKB,
     [algorithm + "-decompressionSizeKb"]: result2.outputFileSize,
     [algorithm + "-decompressionTimeMs"]: result2.timeMs,
