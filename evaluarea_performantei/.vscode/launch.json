@@ -26,6 +26,13 @@
       "name": "Launch All",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}\\index.js"
-    }
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch Server Runner",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\server-runner.js",
+    },
   ]
 }
