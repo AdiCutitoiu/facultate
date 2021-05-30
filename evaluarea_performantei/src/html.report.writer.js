@@ -18,7 +18,7 @@ function createChart(results, title, key) {
   return {
     ["chart_div" + count]: {
       title,
-      columns: ["X", "gzip", "lzma"],
+      columns: ["X", "gzip", "brotli", "lzma"],
       rows: rows,
     },
   };
