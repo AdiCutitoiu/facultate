@@ -79,7 +79,7 @@ async function getFilePathAsync(fileId) {
   return fileId;
 }
 
-const ALGORITHMS = [/*"gzip", "lzma", */"brotli"];
+const ALGORITHMS = ["gzip", "lzma", "brotli"];
 
 function buildServer(port) {
   const server = express();
