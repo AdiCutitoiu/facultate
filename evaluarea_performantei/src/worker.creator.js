@@ -1,15 +1,19 @@
 const fs = require("fs");
-const lzString = require("lz-string");
-const { gzipSync, unzipSync } = require("zlib");
+const {
+  gzipSync,
+  unzipSync,
+  brotliCompressSync,
+  brotliDecompressSync,
+} = require("zlib");
 const lzmaNative = require("lzma-native");
 
 const COMPRESSER_MAP = {
   lzma: {
     compress: async ({ input, output }) => {
       return new Promise((resolve, reject) => {
-        var compressor = lzmaNative.createCompressor();
-        var inputStream = fs.createReadStream(input);
-        var outputStream = fs.createWriteStream(output);
+        const compressor = lzmaNative.createCompressor();
+        const inputStream = fs.createReadStream(input);
+        const outputStream = fs.createWriteStream(output);
 
         inputStream.pipe(compressor).pipe(outputStream);
         outputStream.on("finish", resolve);
@@ -17,30 +21,26 @@ const COMPRESSER_MAP = {
     },
     decompress: async ({ input, output }) => {
       return new Promise((resolve, reject) => {
-        var decompressor = lzmaNative.createDecompressor();
-        var inputStream = fs.createReadStream(input);
-        var outputStream = fs.createWriteStream(output);
+        const decompressor = lzmaNative.createDecompressor();
+        const inputStream = fs.createReadStream(input);
+        const outputStream = fs.createWriteStream(output);
 
         inputStream.pipe(decompressor).pipe(outputStream);
         outputStream.on("finish", resolve);
       });
     },
   },
-  lzstring: {
+  brotli: {
     compress: async ({ input, output }) => {
       return new Promise((resolve) => {
-        const compressed = lzString.compressToUint8Array(
-          "" + fs.readFileSync(input)
-        );
+        const compressed = brotliCompressSync("" + fs.readFileSync(input));
         fs.writeFileSync(output, compressed);
         resolve();
       });
     },
     decompress: async ({ input, output }) => {
       return new Promise((resolve) => {
-        const decompressed = lzString.decompressFromUint8Array(
-          fs.readFileSync(input)
-        );
+        const decompressed = brotliDecompressSync(fs.readFileSync(input));
         fs.writeFileSync(output, decompressed);
         resolve();
       });

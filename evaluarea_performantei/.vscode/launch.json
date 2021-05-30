@@ -12,12 +12,12 @@
       "program": "${workspaceFolder}\\runner.js",
       "args": [
         "-i",
-        "E:\\master\\evaluarea_performantei\\files\\compressed\\Clean architecture.pdf.xz",
+        "E:\\master\\evaluarea_performantei\\files\\initial\\Clean architecture.pdf",
         "-o",
-        "E:\\master\\evaluarea_performantei\\files\\decompressed\\Clean architecture.pdf",
+        "E:\\master\\evaluarea_performantei\\files\\compressed\\Clean architecture.pdf.xz",
         "-a",
-        "lzma",
-        "-d"
+        "brotli",
+        //"-d"
       ]
     },
     {
